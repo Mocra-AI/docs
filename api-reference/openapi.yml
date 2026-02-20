@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Mocra
-  description: Mocra's APIs to interacting with videos.
+  description: Mocra's APIs for interacting with videos.
   version: 1.0.0
 servers:
   - url: "https://api.mocra.io/"
@@ -51,7 +51,7 @@ paths:
                   description: URL of the video to analyze.
                 customCriteria:
                   type: array
-                  description: A list of extra custom criteria to be analized.
+                  description: A list of extra custom criteria to be analyzed.
                   items:
                     type: object
                     description: Custom criterion that should be analyzed.

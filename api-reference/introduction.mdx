@@ -1,33 +1,26 @@
 ---
 title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+description: 'API reference for Mocra endpoints'
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## Overview
 
-## Welcome
+The Mocra API lets you analyze videos for quality and consistency. Send a video URL and optional criteria; the API returns an overall score and per-criterion breakdowns. Use these to monitor and improve video generation pipelines.
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+**Base URL:** `https://api.mocra.io/`
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+Reference and request/response schemas are generated from the [OpenAPI spec](https://github.com/Mocra-AI/Mocra) used by this site.
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+All requests must include a Bearer token in the `Authorization` header. Use your Mocra API key as the token.
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+```http
+Authorization: Bearer <YOUR_API_KEY>
 ```
+
+If you don’t have an API key, see the [Quickstart](/quickstart) for how to get one (Mocra is currently in beta; keys are issued to waitlist signups).
+
+## Errors
+
+Failed requests return appropriate HTTP status codes and a JSON body with a `message` field describing the error. Fix the request (e.g. invalid URL, missing body, invalid token) and retry.

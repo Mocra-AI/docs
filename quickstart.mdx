@@ -18,11 +18,8 @@ description: "Start increasing the observability of your video generation workfl
 
   </Accordion>
   <Accordion icon="node" title="NodeJS SDK">
-    If you prefer a SDK, currently we provide a driver for NodeJS. 1. Install
-    the Mintlify CLI: `npm i -g mint` 2. Navigate to your docs directory and
-    run: `mint dev` 3. Open `http://localhost:3000` to see your docs live!
-
-    To use the NodeJS SDK, you will have to install it. Run the following command:
+    If you prefer an SDK, we currently provide a driver for Node.js. To use the
+    NodeJS SDK, you will need to install it. Run the following command:
     ```bash
     npm install @mocra/observe
     ```
@@ -34,7 +31,7 @@ description: "Start increasing the observability of your video generation workfl
     We currently do not have a native Python SDK, but it will be coming soon.
     Stay updated!
     <Tip>
-      Suscribe to our newsletter by emailing `contact@mocra.io` to receive
+      Subscribe to our newsletter by emailing `contact@mocra.io` to receive
       updates regarding development.
     </Tip>
   </Accordion>
@@ -42,16 +39,16 @@ description: "Start increasing the observability of your video generation workfl
 
 ### Step 2: Get a Mocra API key
 
-An API key will be required to interact with Mocra.
+An API key is required to interact with Mocra.
 
-Currently, Mocra is in beta trial, so a limited number of API keys is being issued to selected customers.
+Currently, Mocra is in beta trial, so a limited number of API keys are being issued to selected customers.
 If you are interested in using Mocra, email `contact@mocra.io` to join our waitlist.
 
 ### Step 3: Write your code
 
 <AccordionGroup>
   <Accordion icon="terminal" title="HTTP API">
-    You can use the HTTP API from any environment that supports HTTP requests. Here there is an example using cURL:
+    You can use the HTTP API from any environment that supports HTTP requests. Here is an example using cURL:
     ```bash
     curl \
       -X POST \
@@ -67,7 +64,7 @@ If you are interested in using Mocra, email `contact@mocra.io` to join our waitl
     ```
   </Accordion>
   <Accordion icon="node" title="NodeJS SDK">
-    Import required functions from `@mocra/observe` and use as in the them that follows:
+    Import the required functions from `@mocra/observe` and use them as in the example that follows:
     ```typescript
     import { VideoObservabilityApi } from "@mocra/observe";
 
@@ -91,20 +88,19 @@ If you are interested in using Mocra, email `contact@mocra.io` to join our waitl
     We currently do not have a native Python SDK, but it will be coming soon.
     Stay updated!
     <Tip>
-      Suscribe to our newsletter by emailing `mocrateam@gmail.com` to receive
+      Subscribe to our newsletter by emailing `contact@mocra.io` to receive
       updates regarding development.
     </Tip>
   </Accordion>
 </AccordionGroup>
 
 <Tip>
-  Mocra uses Mintlify to remain optimized for LLMs. Feel free to use your
-  favorite LLM to write code that interacts with Mocra!
+  Feel free to use your favorite LLM to write code that interacts with Mocra.
 </Tip>
 
 ## Next steps
 
-Now that you have your docs running, explore these key features:
+Now that you're set up, explore these key features:
 
 <CardGroup cols={2}>
 
@@ -113,11 +109,11 @@ Now that you have your docs running, explore these key features:
   icon="square-code"
   href="https://github.com/Mocra-AI/Mocra"
 >
-  Contribute to Mocra for a more stable and featureful SDK.
+  Contribute to Mocra for a more stable and feature-rich SDK.
 </Card>
 
 <Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Read the full documentation for more detailed explanation on how to use
+  Read the full documentation for a more detailed explanation of how to use
   Mocra's observability functionality.
 </Card>
 

@@ -1,36 +1,25 @@
-# Mocra docs
+# Mocra documentation
 
-## Description
+This repository contains the source for [Mocra](https://mocra.io) product documentation: quickstart, API reference, and development setup. The site is built and hosted with [Mintlify](https://mintlify.com).
 
-Documentation for Mocra APIs, SDKs, and other infrastructure.
+## Previewing locally
 
-## Development
+1. Install the Mintlify CLI: `npm i -g mint`
+2. Clone this repo and from its root (where `docs.json` is), run: `mint dev`
+3. Open `http://localhost:3000` to view the docs.
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
+Changes to `.mdx` and OpenAPI files will hot-reload.
 
-```
-npm i -g mint
-```
+## Publishing
 
-Run the following command at the root of your documentation, where your `docs.json` is located:
+The live site is updated automatically when changes are pushed to the default branch. The Mintlify GitHub app must be installed for the organization/repo; configure it in the [Mintlify dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
 
-```
-mint dev
-```
+## Troubleshooting
 
-View your local preview at `http://localhost:3000`.
+- **Local preview won’t start or looks wrong:** Run `mint update` to use the latest CLI.
+- **404s on every page:** Ensure you’re in the repo root that contains `docs.json`.
 
-## Publishing changes
+## More
 
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
-
-## Need help?
-
-### Troubleshooting
-
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
-
-### Resources
-
-- [Mintlify documentation](https://mintlify.com/docs)
+- For the full Development guide (custom ports, link checking, editing tips), open the docs locally or on the published site and go to **Development**.
+- [Mintlify docs](https://mintlify.com/docs) for the platform itself.
