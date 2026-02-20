@@ -9,83 +9,28 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "tabs": [
+    "groups": [
       {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
-            ]
-          },
-          {
-            "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
-            ]
-          }
-        ]
+        "group": "Getting started",
+        "pages": ["index", "development"]
       },
       {
-        "tab": "API reference",
-        "groups": [
+        "group": "Observe",
+        "openapi": "api-reference/openapi.yml",
+        "pages": [
+          "quickstart",
           {
             "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
-            ]
+            "root": "api-reference/introduction",
+            "pages": ["POST /observe"]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
-    "light": "/logo/mocra-black.png",
-    "dark": "/logo/mocra-white.png"
+    "light": "/img/logo/mocra-black.png",
+    "dark": "/img/logo/mocra-white.png"
   },
   "navbar": {
     "links": [
@@ -93,24 +38,19 @@
         "label": "Support",
         "href": "mailto:contact@mocra.io"
       }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
+    ]
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {

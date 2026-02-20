@@ -1,0 +1,137 @@
+openapi: 3.1.0
+info:
+  title: Mocra
+  description: Mocra's APIs to interacting with videos.
+  version: 1.0.0
+servers:
+  - url: "https://api.mocra.io/"
+    description: Official production server
+security:
+  - bearerAuth: []
+paths:
+  /observe:
+    post:
+      x-codeSamples:
+        - lang: javascript
+          label: Analyzes a video using NodeJS
+          source: |
+            import { VideoObservabilityApi } from "@mocra/observe";
+
+            new VideoObservabilityApi("<YOUR API KEY>") // Replace with your actual API key
+              .scoreVideo(
+                "http://example.org/video.mp4", // Replace with your actual video to analyze
+                [
+                  {
+                    criterionName: "Blur",
+                    criterionDescription:
+                      "The video should not be blurry",
+                  },
+                ],
+                ["UNNATURAL PHYSICS"],
+              )
+              .then((result) => console.log(result));
+      summary: Analyze video score
+      description: >-
+        Analyzes the current video and gives it a score of how good it fulfills
+        the criteria.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - videoUrl
+              type: object
+              description: >-
+                Request body detailing what URL and criteria to use for the
+                analysis.
+              properties:
+                videoUrl:
+                  type: string
+                  description: URL of the video to analyze.
+                customCriteria:
+                  type: array
+                  description: A list of extra custom criteria to be analized.
+                  items:
+                    type: object
+                    description: Custom criterion that should be analyzed.
+                    properties:
+                      criterionName:
+                        type: string
+                        description: Descriptive name for this criterion.
+                      criterionDescription:
+                        type: string
+                        description: >-
+                          Plain language description of what this criterion is
+                          about.
+                removeCriteria:
+                  type: array
+                  description: A list of names of default criteria that should not be used for this analysis
+                  items:
+                    enum:
+                      - UNNATURAL PHYSICS
+                      - MORPHING
+                      - FLICKERING
+                      - ARTIFACTING
+                      - TEXT ISSUES
+      responses:
+        "200":
+          description: Score of the given video with the specified criteria.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: >-
+                  Scores detailing the result of the analysis performed by the
+                  Mocra API
+                required:
+                  - severity
+                  - criteria
+                properties:
+                  severity:
+                    type: number
+                    description: Overall score assigned for the given video
+                    minimum: 1
+                    maximum: 100
+                    multipleOf: 0.01
+                  criteria:
+                    type: array
+                    description: Per-criterion breakdown of scores
+                    items:
+                      type: object
+                      required:
+                        - name
+                        - score
+                      properties:
+                        name:
+                          type: string
+                          description: The name of this criterion
+                        score:
+                          type: number
+                          description: The score assigned for this criterion
+                          minimum: 1
+                          maximum: 100
+                          multipleOf: 0.01
+        "400":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    ScoreMap:
+      required:
+        - severity
+        - criteria
+    Error:
+      required:
+        - message
+      type: object
+      properties:
+        message:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

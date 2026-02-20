@@ -1,55 +1,106 @@
 ---
 title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+description: "Start increasing the observability of your video generation workflow with Mocra."
 ---
 
-## Get started in three steps
+## Getting started
 
-Get your documentation site running locally and make your first customization.
-
-### Step 1: Set up your local environment
+### Step 1: Choose and set up your environment
 
 <AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
+  <Accordion icon="terminal" title="HTTP API">
+    Mocra has a powerful RESTful HTTP API accessible at `https://api.mocra.io/`.
+    You can use it to interact with Mocra if you prefer an HTTP interface or if
+    your favorite programming language is not listed below.
+
+    Using the HTTP API does not require installing anything as long as your
+    language or environment can perform HTTP operations.
+
   </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
+  <Accordion icon="node" title="NodeJS SDK">
+    If you prefer a SDK, currently we provide a driver for NodeJS. 1. Install
+    the Mintlify CLI: `npm i -g mint` 2. Navigate to your docs directory and
+    run: `mint dev` 3. Open `http://localhost:3000` to see your docs live!
+
+    To use the NodeJS SDK, you will have to install it. Run the following command:
+    ```bash
+    npm install @mocra/observe
+    ```
+
+    This installation includes TypeScript typings in case you want to use them.
+
+  </Accordion>
+  <Accordion icon="python" title="Python SDK">
+    We currently do not have a native Python SDK, but it will be coming soon.
+    Stay updated!
+    <Tip>
+      Suscribe to our newsletter by emailing `contact@mocra.io` to receive
+      updates regarding development.
+    </Tip>
   </Accordion>
 </AccordionGroup>
 
-### Step 2: Deploy your changes
+### Step 2: Get a Mocra API key
+
+An API key will be required to interact with Mocra.
+
+Currently, Mocra is in beta trial, so a limited number of API keys is being issued to selected customers.
+If you are interested in using Mocra, email `contact@mocra.io` to join our waitlist.
+
+### Step 3: Write your code
 
 <AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+  <Accordion icon="terminal" title="HTTP API">
+    You can use the HTTP API from any environment that supports HTTP requests. Here there is an example using cURL:
+    ```bash
+    curl \
+      -X POST \
+      -H "Authorization: Bearer <YOUR API KEY>" \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d "{\
+          \"videoUrl\": \"<YOUR VIDEO URL>\",\
+          \"customCriteria\": [],\
+          \"removeCriteria\": []\
+      }"\
+      https://api.mocra.io/observe
+    ```
+  </Accordion>
+  <Accordion icon="node" title="NodeJS SDK">
+    Import required functions from `@mocra/observe` and use as in the them that follows:
+    ```typescript
+    import { VideoObservabilityApi } from "@mocra/observe";
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+    new VideoObservabilityApi("<YOUR API KEY>") // Replace with your actual API key
+      .scoreVideo(
+        "http://example.org/video.mp4", // Replace with your actual video to analyze
+        [
+          {
+            criterionName: "Blur",
+            criterionDescription:
+              "The video should not be blurry",
+          },
+        ],
+        ["UNNATURAL PHYSICS"],
+      )
+      .then((result) => console.log(result));
+    ```
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
+  </Accordion>
+  <Accordion icon="python" title="Python SDK">
+    We currently do not have a native Python SDK, but it will be coming soon.
+    Stay updated!
+    <Tip>
+      Suscribe to our newsletter by emailing `mocrateam@gmail.com` to receive
+      updates regarding development.
+    </Tip>
   </Accordion>
 </AccordionGroup>
 
-### Step 3: Go live
-
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+<Tip>
+  Mocra uses Mintlify to remain optimized for LLMs. Feel free to use your
+  favorite LLM to write code that interacts with Mocra!
+</Tip>
 
 ## Next steps
 
@@ -57,24 +108,17 @@ Now that you have your docs running, explore these key features:
 
 <CardGroup cols={2}>
 
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
+<Card
+  title="Contribute to Mocra"
+  icon="square-code"
+  href="https://github.com/Mocra-AI/Mocra"
+>
+  Contribute to Mocra for a more stable and featureful SDK.
 </Card>
 
 <Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
+  Read the full documentation for more detailed explanation on how to use
+  Mocra's observability functionality.
 </Card>
 
 </CardGroup>
-
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>
