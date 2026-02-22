@@ -13,26 +13,27 @@ paths:
     post:
       x-codeSamples:
         - lang: javascript
-          label: Analyzes a video using NodeJS
+          label: Analyze a video
           source: |
-            import { VideoObservabilityApi } from "@mocra/observe";
+            const response = await fetch("https://api.mocra.io/observe", {
+              method: "POST",
+              headers: {
+                "Authorization": "Bearer <YOUR API KEY>",
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+              },
+              body: JSON.stringify({
+                videoUrl: "<YOUR VIDEO URL>",
+                customCriteria: [],
+                removeCriteria: [],
+              }),
+            });
 
-            new VideoObservabilityApi("<YOUR API KEY>") // Replace with your actual API key
-              .scoreVideo(
-                "http://example.org/video.mp4", // Replace with your actual video to analyze
-                [
-                  {
-                    criterionName: "Blur",
-                    criterionDescription:
-                      "The video should not be blurry",
-                  },
-                ],
-                ["UNNATURAL PHYSICS"],
-              )
-              .then((result) => console.log(result));
+            const result = await response.json();
+            console.log(result);
       summary: Analyze video score
       description: >-
-        Analyzes the current video and gives it a score of how good it fulfills
+        Analyzes the current video and gives it a score of how well it fulfills
         the criteria.
       requestBody:
         required: true

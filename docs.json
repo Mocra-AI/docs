@@ -12,7 +12,7 @@
     "groups": [
       {
         "group": "Getting started",
-        "pages": ["index", "development"]
+        "pages": ["index"]
       },
       {
         "group": "Observe",
@@ -20,11 +20,15 @@
         "pages": [
           "quickstart",
           {
-            "group": "API documentation",
+            "group": "HTTPS documentation",
             "root": "api-reference/introduction",
             "pages": ["POST /observe"]
           }
         ]
+      },
+      {
+        "group": "SDKs",
+        "pages": ["sdks/javascript", "sdks/python"]
       }
     ]
   },

@@ -1,0 +1,174 @@
+---
+title: "Python SDK"
+description: "Use the Mocra Python SDK to analyze videos for quality and consistency."
+---
+
+## Overview
+
+The Mocra Python SDK wraps the [Mocra REST API](/api-reference/introduction) and handles authentication, serialization, and error handling for you.
+
+**Package:** `mocra` — requires Python 3.10+
+
+## Installation
+
+```bash
+pip install mocra
+```
+
+## Quick start
+
+```python
+from mocra import VideoObservabilityApi, ExtraCriterion
+
+api = VideoObservabilityApi("YOUR_API_KEY")
+result = api.score_video(
+    "https://example.org/video.mp4",
+    extra_criteria=[
+        ExtraCriterion(
+            criterion_name="Blur",
+            criterion_description="The video should not be blurry",
+        ),
+    ],
+    ignore_criteria=["UNNATURAL PHYSICS"],
+)
+
+print(f"Overall score: {result.severity}")
+for criterion in result.criteria:
+    print(f"  {criterion.name}: {criterion.score}")
+```
+
+## `VideoObservabilityApi`
+
+The main client class. Instantiate it once with your API key and reuse it across requests.
+
+```python
+from mocra import VideoObservabilityApi
+
+api = VideoObservabilityApi("YOUR_API_KEY")
+```
+
+### Constructor parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `api_key` | `str` | required | Your Mocra API key. See the [Quickstart](/quickstart) to get one. |
+| `base_url` | `str \| None` | `"https://api.mocra.io"` | Override the API base URL. Useful for testing. |
+| `timeout` | `float` | `60.0` | Request timeout in seconds. |
+| `http_client` | `httpx.Client \| None` | `None` | Bring your own pre-configured `httpx.Client` (e.g. with custom proxies or retry logic). |
+
+### `score_video()`
+
+Analyzes a video against Mocra's built-in criteria and any custom criteria you provide.
+
+```python
+result = api.score_video(
+    video_url,
+    extra_criteria=[...],   # optional
+    ignore_criteria=[...],  # optional
+)
+```
+
+#### Parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `video_url` | `str` | required | Publicly accessible URL of the video to analyze. |
+| `extra_criteria` | `list[ExtraCriterion]` | `[]` | Additional custom criteria to evaluate. |
+| `ignore_criteria` | `list[str \| DefaultCriterion]` | `[]` | Built-in criteria to exclude from the analysis. Accepts raw strings (e.g. `"UNNATURAL PHYSICS"`) or `DefaultCriterion` enum values. |
+
+#### Returns: `ObserveResponse`
+
+| Field | Type | Description |
+|---|---|---|
+| `severity` | `float` | Overall quality score from 1 (worst) to 100 (best). |
+| `criteria` | `list[CriterionScore]` | Per-criterion breakdown. Each item has `name: str` and `score: float` (1–100). |
+
+## `ExtraCriterion`
+
+Defines a custom quality criterion to include in the analysis.
+
+```python
+from mocra import ExtraCriterion
+
+criterion = ExtraCriterion(
+    criterion_name="Blur",
+    criterion_description="The video should not be blurry",
+)
+```
+
+| Field | Type | Description |
+|---|---|---|
+| `criterion_name` | `str` | Short label for the criterion. |
+| `criterion_description` | `str` | Full description of what the criterion checks. |
+
+## `DefaultCriterion`
+
+An enum of the built-in criteria that Mocra evaluates by default. Pass one or more values to `ignore_criteria` to exclude them from the analysis.
+
+```python
+from mocra import DefaultCriterion
+
+result = api.score_video(
+    "https://example.org/video.mp4",
+    ignore_criteria=[
+        DefaultCriterion.UNNATURAL_PHYSICS,
+        DefaultCriterion.FLICKERING,
+    ],
+)
+```
+
+| Value | String equivalent |
+|---|---|
+| `DefaultCriterion.UNNATURAL_PHYSICS` | `"UNNATURAL PHYSICS"` |
+| `DefaultCriterion.MORPHING` | `"MORPHING"` |
+| `DefaultCriterion.FLICKERING` | `"FLICKERING"` |
+| `DefaultCriterion.ARTIFACTING` | `"ARTIFACTING"` |
+| `DefaultCriterion.TEXT_ISSUES` | `"TEXT ISSUES"` |
+
+## Error handling
+
+The SDK raises `MocraError` when the API returns a non-200 response, and `httpx.HTTPError` for network-level failures.
+
+```python
+from mocra import VideoObservabilityApi, MocraError
+import httpx
+
+api = VideoObservabilityApi("YOUR_API_KEY")
+
+try:
+    result = api.score_video("https://example.org/video.mp4")
+except MocraError as e:
+    print(f"API error {e.status_code}: {e.message}")
+except httpx.HTTPError as e:
+    print(f"Network error: {e}")
+```
+
+### `MocraError`
+
+| Attribute | Type | Description |
+|---|---|---|
+| `message` | `str` | Human-readable error description from the API response. |
+| `status_code` | `int \| None` | HTTP status code of the failed response. |
+
+## Context manager
+
+Use `VideoObservabilityApi` as a context manager to ensure the underlying HTTP connection is closed when you're done:
+
+```python
+from mocra import VideoObservabilityApi, ExtraCriterion
+
+with VideoObservabilityApi("YOUR_API_KEY") as api:
+    result = api.score_video(
+        "https://example.org/video.mp4",
+        extra_criteria=[
+            ExtraCriterion(
+                criterion_name="Blur",
+                criterion_description="The video should not be blurry",
+            ),
+        ],
+    )
+    print(result.severity)
+```
+
+You can also call `api.close()` manually if you are not using the context manager.
+

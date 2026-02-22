@@ -17,23 +17,25 @@ description: "Start increasing the observability of your video generation workfl
     language or environment can perform HTTP operations.
 
   </Accordion>
-  <Accordion icon="node" title="NodeJS SDK">
-    If you prefer an SDK, we currently provide a driver for Node.js. To use the
-    NodeJS SDK, you will need to install it. Run the following command:
+  <Accordion icon="js" title="JavaScript SDK">
+    If you prefer an SDK, we provide a driver for JavaScript and TypeScript. To use the
+    JavaScript SDK, install it with npm:
     ```bash
     npm install @mocra/observe
     ```
 
-    This installation includes TypeScript typings in case you want to use them.
+    TypeScript typings are included.
 
   </Accordion>
   <Accordion icon="python" title="Python SDK">
-    We currently do not have a native Python SDK, but it will be coming soon.
-    Stay updated!
-    <Tip>
-      Subscribe to our newsletter by emailing `contact@mocra.io` to receive
-      updates regarding development.
-    </Tip>
+    If you prefer an SDK, we provide a driver for Python. To use the Python SDK,
+    install it with pip:
+    ```bash
+    pip install mocra
+    ```
+
+    The SDK requires Python 3.10 or higher.
+
   </Accordion>
 </AccordionGroup>
 
@@ -63,40 +65,47 @@ If you are interested in using Mocra, email `contact@mocra.io` to join our waitl
       https://api.mocra.io/observe
     ```
   </Accordion>
-  <Accordion icon="node" title="NodeJS SDK">
-    Import the required functions from `@mocra/observe` and use them as in the example that follows:
+  <Accordion icon="js" title="JavaScript SDK">
+    Import the required class from `@mocra/observe` and use it as in the example that follows:
     ```typescript
     import { VideoObservabilityApi } from "@mocra/observe";
 
-    new VideoObservabilityApi("<YOUR API KEY>") // Replace with your actual API key
-      .scoreVideo(
-        "http://example.org/video.mp4", // Replace with your actual video to analyze
-        [
-          {
-            criterionName: "Blur",
-            criterionDescription:
-              "The video should not be blurry",
-          },
-        ],
-        ["UNNATURAL PHYSICS"],
-      )
-      .then((result) => console.log(result));
+    const api = new VideoObservabilityApi("<YOUR API KEY>");
+    const result = await api.scoreVideo(
+      "http://example.org/video.mp4",
+      [
+        {
+          criterionName: "Blur",
+          criterionDescription: "The video should not be blurry",
+        },
+      ],
+      ["UNNATURAL PHYSICS"],
+    );
+    console.log(result.severity, result.criteria);
     ```
 
   </Accordion>
   <Accordion icon="python" title="Python SDK">
-    We currently do not have a native Python SDK, but it will be coming soon.
-    Stay updated!
-    <Tip>
-      Subscribe to our newsletter by emailing `contact@mocra.io` to receive
-      updates regarding development.
-    </Tip>
+    Import the required classes from `mocra` and use them as in the example that follows:
+    ```python
+    from mocra import VideoObservabilityApi, ExtraCriterion
+
+    api = VideoObservabilityApi("<YOUR API KEY>")
+    result = api.score_video(
+        "http://example.org/video.mp4",
+        extra_criteria=[
+            ExtraCriterion(
+                criterion_name="Blur",
+                criterion_description="The video should not be blurry",
+            ),
+        ],
+        ignore_criteria=["UNNATURAL PHYSICS"],
+    )
+    print(result.severity, result.criteria)
+    ```
+
   </Accordion>
 </AccordionGroup>
-
-<Tip>
-  Feel free to use your favorite LLM to write code that interacts with Mocra.
-</Tip>
 
 ## Next steps
 
@@ -104,17 +113,12 @@ Now that you're set up, explore these key features:
 
 <CardGroup cols={2}>
 
-<Card
-  title="Contribute to Mocra"
-  icon="square-code"
-  href="https://github.com/Mocra-AI"
->
-  Contribute to Mocra for a more stable and feature-rich SDK.
+<Card title="JavaScript SDK" icon="js" href="/sdks/javascript">
+  Reference documentation for the Mocra JavaScript SDK.
 </Card>
 
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Read the full documentation for a more detailed explanation of how to use
-  Mocra's observability functionality.
+<Card title="Python SDK" icon="python" href="/sdks/python">
+  Reference documentation for the Mocra Python SDK.
 </Card>
 
 </CardGroup>

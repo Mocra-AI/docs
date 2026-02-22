@@ -1,0 +1,135 @@
+---
+title: "JavaScript SDK"
+description: "Use the Mocra JavaScript SDK to analyze videos for quality and consistency."
+---
+
+## Overview
+
+The Mocra JavaScript SDK wraps the [Mocra REST API](/api-reference/introduction) and handles authentication, serialization, and error handling for you. TypeScript typings are included.
+
+**Package:** `@mocra/observe` — requires Node.js 18+
+
+## Installation
+
+```bash
+npm install @mocra/observe
+```
+
+## Quick start
+
+```typescript
+import { VideoObservabilityApi } from "@mocra/observe";
+
+const api = new VideoObservabilityApi("YOUR_API_KEY");
+const result = await api.scoreVideo(
+  "https://example.org/video.mp4",
+  [
+    {
+      criterionName: "Blur",
+      criterionDescription: "The video should not be blurry",
+    },
+  ],
+  ["UNNATURAL PHYSICS"],
+);
+
+console.log("Overall score:", result.severity);
+for (const criterion of result.criteria) {
+  console.log(`  ${criterion.name}: ${criterion.score}`);
+}
+```
+
+## `VideoObservabilityApi`
+
+The main client class. Instantiate it once with your API key and reuse it across requests.
+
+```typescript
+import { VideoObservabilityApi } from "@mocra/observe";
+
+const api = new VideoObservabilityApi("YOUR_API_KEY");
+```
+
+### Constructor parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `apiKey` | `string` | required | Your Mocra API key. See the [Quickstart](/quickstart) to get one. |
+
+### `scoreVideo()`
+
+Analyzes a video against Mocra's built-in criteria and any custom criteria you provide.
+
+```typescript
+const result = await api.scoreVideo(
+  videoUrl,
+  extraCriteria,   // optional
+  ignoreCriteria,  // optional
+);
+```
+
+#### Parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `videoUrl` | `string` | required | Publicly accessible URL of the video to analyze. |
+| `extraCriteria` | `ExtraCriterion[]` | `[]` | Additional custom criteria to evaluate. |
+| `ignoreCriteria` | `string[]` | `[]` | Built-in criteria to exclude from the analysis. See [default criteria](#default-criteria) for accepted values. |
+
+#### Returns: `Promise<ScoreMap>`
+
+| Field | Type | Description |
+|---|---|---|
+| `severity` | `number` | Overall quality score from 1 (worst) to 100 (best). |
+| `criteria` | `CriterionScore[]` | Per-criterion breakdown. Each item has `name: string` and `score: number` (1–100). |
+
+## `ExtraCriterion`
+
+Defines a custom quality criterion to include in the analysis.
+
+```typescript
+const criterion: ExtraCriterion = {
+  criterionName: "Blur",
+  criterionDescription: "The video should not be blurry",
+};
+```
+
+| Field | Type | Description |
+|---|---|---|
+| `criterionName` | `string` | Short label for the criterion. |
+| `criterionDescription` | `string` | Full description of what the criterion checks. |
+
+## Default criteria
+
+The following built-in criteria are evaluated by default. Pass one or more of these strings to `ignoreCriteria` to exclude them from the analysis.
+
+| Value |
+|---|
+| `"UNNATURAL PHYSICS"` |
+| `"MORPHING"` |
+| `"FLICKERING"` |
+| `"ARTIFACTING"` |
+| `"TEXT ISSUES"` |
+
+```typescript
+const result = await api.scoreVideo(
+  "https://example.org/video.mp4",
+  [],
+  ["UNNATURAL PHYSICS", "FLICKERING"],
+);
+```
+
+## Error handling
+
+`scoreVideo` rejects with an error if the API returns a non-200 response or if a network failure occurs.
+
+```typescript
+import { VideoObservabilityApi } from "@mocra/observe";
+
+const api = new VideoObservabilityApi("YOUR_API_KEY");
+
+try {
+  const result = await api.scoreVideo("https://example.org/video.mp4");
+  console.log(result.severity);
+} catch (error) {
+  console.error("Request failed:", error);
+}
+```
